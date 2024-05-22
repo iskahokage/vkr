@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    command: npm run start
+    restart: always
+    networks:
+      - app
+  server:
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    ports:
+      - 8000:8000
+    command: npm run dev
+    depends_on:
+      - postgres
+    restart: always
+    networks:
+      - app
+  postgres:
+    container_name: postgres
+    image: postgres
+    env_file:
+      - ./server/.env
+    environment:
+      DB_PASSWORD: postgres
+      DB_USER: postgres   
+      DB_NAME: vkr
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - /pgdata:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - app
+volumes:
+  pgdata:
+networks: 
+  app:
+    driver: 'bridge'
