@@ -24,7 +24,7 @@ export interface IArticle {
   content: string;
   cover: string;
 }
-export const UserModel = sequelize.define<IArticleModel>('User', {
+export const ArticleModel = sequelize.define<IArticleModel>('article', {
   id: {
     primaryKey: true,
     autoIncrement: true,

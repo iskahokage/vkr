@@ -14,29 +14,35 @@ import sequelize from '../db';
 interface IUserModel
   extends Model<InferAttributes<IUserModel>, InferCreationAttributes<IUserModel>> {
   id: CreationOptional<number>;
+  email: string;
   name: string;
   surname: string;
-  patronymic: string;
-  passowrd: string;
-  avatar: string,
-  phone: string,
-  telegram_id: string,
+  patronymic?: string;
+  password: string;
+  avatar?: string;
+  phone: string;
+  telegram_id?: string;
 }
 export interface IUser {
-  id: number;
+  id?: number;
+  email: string;
   name: string;
   surname: string;
-  patronymic: string;
-  passowrd: string;
-  avatar: string,
-  phone: string,
-  telegram_id: string,
+  patronymic?: string;
+  password: string;
+  avatar?: string;
+  phone: string;
+  telegram_id?: string;
 }
-export const UserModel = sequelize.define<IUserModel>('User', {
+export const UserModel = sequelize.define<IUserModel>('user', {
   id: {
     primaryKey: true,
     autoIncrement: true,
     type: DataTypes.INTEGER.UNSIGNED,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
   name: {
     type: DataTypes.STRING,
@@ -49,7 +55,7 @@ export const UserModel = sequelize.define<IUserModel>('User', {
   patronymic: {
     type: DataTypes.STRING,
   },
-  passowrd: {
+  password: {
     type: DataTypes.STRING,
     allowNull: false
   },
