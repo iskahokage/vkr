@@ -11,17 +11,23 @@ import sequelize from '../db';
 
 // We recommend you declare an interface for the attributes, for stricter typechecking
 
+enum UserRole {
+  admin = 'admin',
+  user = 'user'
+}
 interface IUserModel
   extends Model<InferAttributes<IUserModel>, InferCreationAttributes<IUserModel>> {
   id: CreationOptional<number>;
   email: string;
   name: string;
   surname: string;
-  patronymic?: string;
   password: string;
-  avatar?: string;
   phone: string;
+  avatar?: string;
+  patronymic?: string;
   telegram_id?: string;
+  active?: boolean;
+  role?: UserRole;
 }
 export interface IUser {
   id?: number;
@@ -33,6 +39,8 @@ export interface IUser {
   avatar?: string;
   phone: string;
   telegram_id?: string;
+  active?: boolean;
+  role?: UserRole;
 }
 export const UserModel = sequelize.define<IUserModel>('user', {
   id: {
@@ -42,7 +50,8 @@ export const UserModel = sequelize.define<IUserModel>('user', {
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   name: {
     type: DataTypes.STRING,
@@ -64,10 +73,21 @@ export const UserModel = sequelize.define<IUserModel>('user', {
   },
   phone: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   telegram_id: {
     type: DataTypes.STRING,
+    unique: true
   },
+  active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+    allowNull: false
+  },
+  role: {
+    type: DataTypes.ENUM('admin', 'user'),
+    defaultValue: 'user',
+    allowNull: false
+  }
 });
 

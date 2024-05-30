@@ -11,7 +11,7 @@ const tokenRefreshMiddleware = (req: Request, res: Response, next: NextFunction)
             throw ErrorService.UnauthorizedError()
         }
         const userData = TokenService.validateRefreshToken(refreshToken);
-        req.body.user = userData
+        req.user = userData
 
         next()
     } catch (error) {

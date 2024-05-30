@@ -23,7 +23,6 @@ const authController = {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 72,
             });
-
             return res.json(userData.user);
         } catch (error) {
             next(error);

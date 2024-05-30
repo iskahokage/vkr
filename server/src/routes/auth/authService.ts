@@ -5,29 +5,24 @@ import TokenService from "../../helpers/tokenService";
 // import ErrorService from "./helpers/errorService.js";
 // import TokenService from "./helpers/tokenService.js";
 
-
-
 const authService = {
-    register: async ({email,name, surname, phone, patronymic='', password }: IUser) => {
+    register: async ({ email, name, surname, phone, patronymic = "", password }: IUser) => {
         const oldUser = await UserModel.findOne({ where: { email } });
         if (oldUser) {
-            throw ErrorService.BadRequest(
-                "User with this email already registered!",
-            );
+            throw ErrorService.BadRequest("User with this email already registered!");
         }
         const hashedPassword: string = await hash(password, 3);
-        console.log(email,name, surname, phone, patronymic, hashedPassword)
-        const newUSer = await UserModel.create({ email, password: hashedPassword, phone, name, surname, patronymic });
-        return newUSer;
+
+        const newUser = await UserModel.create({ email, password: hashedPassword, phone, name, surname, patronymic });
+        return newUser;
     },
     login: async (email: string, password: string) => {
-        const user = await UserModel.findOne({ where: {email} })
-    
+        const user = await UserModel.findOne({ where: { email } });
+
         if (!user) {
             throw ErrorService.BadRequest("Wrong email or password");
         }
-    
-    
+
         const comparedPassword = await compare(password, user.password);
         if (!comparedPassword) {
             throw ErrorService.BadRequest("Wrong email or password");
@@ -36,26 +31,31 @@ const authService = {
             id: user.id,
             email,
         });
+        const { name, surname, phone, telegram_id, avatar, patronymic } = user;
         return {
             refreshToken: tokens.refreshToken,
             user: {
                 accessToken: tokens.accessToken,
-                id: user.id,
+                name,
+                surname,
+                phone,
+                telegram_id,
+                avatar,
+                patronymic,
                 email,
-                password: user.password,
             },
         };
     },
-    
+
     refreshUser: async (id: string) => {
         const user = await UserModel.findOne({ where: { id } });
 
-        if(user){
+        if (user) {
             const tokens = TokenService.generateTokens({
                 id: user.id,
                 email: user.email,
             });
-            
+
             return {
                 refreshToken: tokens.refreshToken,
                 user: {
@@ -64,9 +64,9 @@ const authService = {
                     email: user.email,
                     password: user.password,
                 },
-            }
-        };
-    }
+            };
+        }
+    },
 };
 
 export default authService;

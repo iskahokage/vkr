@@ -23,7 +23,6 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    console.log(req)
     const date = Date.now()
     cb(null, date + '-' + file.originalname);
   }
