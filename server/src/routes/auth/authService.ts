@@ -31,7 +31,7 @@ const authService = {
             id: user.id,
             email,
         });
-        const { name, surname, phone, telegram_id, avatar, patronymic } = user;
+        const { name, surname, phone, telegram_id, avatar, patronymic, role } = user;
         return {
             refreshToken: tokens.refreshToken,
             user: {
@@ -43,6 +43,7 @@ const authService = {
                 avatar,
                 patronymic,
                 email,
+                role
             },
         };
     },
@@ -51,6 +52,7 @@ const authService = {
         const user = await UserModel.findOne({ where: { id } });
 
         if (user) {
+            const { name, email, surname, phone, telegram_id, avatar, patronymic, role } = user;
             const tokens = TokenService.generateTokens({
                 id: user.id,
                 email: user.email,
@@ -60,9 +62,14 @@ const authService = {
                 refreshToken: tokens.refreshToken,
                 user: {
                     accessToken: tokens.accessToken,
-                    id: user.id,
-                    email: user.email,
-                    password: user.password,
+                    name,
+                    surname,
+                    phone,
+                    telegram_id,
+                    avatar,
+                    patronymic,
+                    email,
+                    role
                 },
             };
         }
