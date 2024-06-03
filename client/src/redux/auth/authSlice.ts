@@ -17,8 +17,8 @@ export const login = createAsyncThunk<IUser, IUserCredentials>(
     "auth/login",
     async (credentials: IUserCredentials) => {
         try {
-            const { data } = await api.post(baseUrl + "/auth/user/login", {email: credentials.email, password: credentials.password});
-            console.log(data)
+            const { data } = await api.post(baseUrl + "/auth/login", {email: credentials.email, password: credentials.password});
+            console.log(credentials)
             return data;
         } catch (error) {
             console.error('Token refresh failed:', error)
@@ -46,12 +46,6 @@ const authSlice = createSlice({
       localStorage.removeItem('user');
     },
   },
-  extraReducers: (builder) => {
-    builder
-        .addCase(login.fulfilled, (state, action) => {
-            state.user = action.payload;
-        })
-  }
 });
 
 export const { setUser, logout } = authSlice.actions;

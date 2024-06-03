@@ -1,7 +1,7 @@
-import axios from "axios";
-import { logout, setUser } from "../redux/auth/authSlice";
-import { IUser } from "../types/user";
 import store from '../redux/store'
+import { logout, setUser } from "../redux/auth/authSlice";
+import axios from "axios";
+import { IUser } from "../types/user";
 export const baseUrl = process.env.REACT_APP_BASE_URL;
 const api = axios.create();
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import {MegaMenu} from 'primereact/megamenu'
+import { baseUrl } from '../../helpers/interceptor';
+import { useAppSelector } from '../../redux/hooks';
 const Header = () => {
+    const {user} = useAppSelector(({auth}) => auth)
     const items = [
         {
             label: 'Company',
@@ -20,7 +23,7 @@ const Header = () => {
         ВКР КНУ
     </p>
 
-    // const end = <img src="" alt="" />
+    const end = <img src={`${baseUrl}/user/avatar`} alt="" />
 
     return (
         <>
