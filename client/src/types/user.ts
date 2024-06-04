@@ -19,3 +19,9 @@ export interface IUserCredentials {
     email: string,
     password: string
 }
+
+export interface IResetPassword {
+    oldPassword: string,
+    password: string,
+    confirmPassword: string
+}

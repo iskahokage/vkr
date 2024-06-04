@@ -27,7 +27,7 @@ const setToken = (newData: IUser) => {
 api.interceptors.request.use((config) => {
     const authToken = getToken(); // Replace with your function to get the authentication token
     if (authToken) {
-        config.headers["Authorization"] = `${authToken}`;
+        config.headers["Authorization"] = `Bearer ${authToken}`;
     }
     return config;
 });

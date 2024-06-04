@@ -2,6 +2,7 @@ import { IUser, UserModel } from "../../db/models/userModel";
 import ErrorService from "../../helpers/errorService";
 import { compare, hash } from "bcrypt";
 import TokenService from "../../helpers/tokenService";
+import { isUserExist } from "../user/userService";
 // import ErrorService from "./helpers/errorService.js";
 // import TokenService from "./helpers/tokenService.js";
 
@@ -43,7 +44,7 @@ const authService = {
                 avatar,
                 patronymic,
                 email,
-                role
+                role,
             },
         };
     },
@@ -69,10 +70,25 @@ const authService = {
                     avatar,
                     patronymic,
                     email,
-                    role
+                    role,
                 },
             };
         }
+    },
+
+    changePassword: async (oldPassword: string, password: string, confirmPassword: string, id: string) => {
+        const user = await isUserExist(id)
+        const comparedPassword = await compare(oldPassword, user.password);
+        if(!comparedPassword){
+            throw ErrorService.BadRequest('Старый пароль введен неверно')
+        }
+        if(password !== confirmPassword){
+            throw ErrorService.BadRequest('Пароли не совпадают')
+        }
+        const hashedPassword: string = await hash(password, 3);
+        await user.update({password: hashedPassword}, {where: {id}})
+        await user.save()
+        return user
     },
 };
 

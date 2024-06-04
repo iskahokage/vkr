@@ -4,7 +4,7 @@ import ErrorService from "../../helpers/errorService"
 import { unlink } from "fs/promises"
 import redisClient, { getOrSetCache } from "../../db/redis"
 
-const isUserExist = async(id: string) => {
+export const isUserExist = async(id: string) => {
     const user = await UserModel.findOne({where: {id}})
     if(!user){
         throw ErrorService.BadRequest('Такого пользователя нет')
@@ -15,7 +15,10 @@ const isUserExist = async(id: string) => {
 const userService = {
     uploadAvatar: async(id: string, avatar: string) => {
         const user = await isUserExist(id)
-        if(!!user.avatar){
+        if(!avatar){
+            throw ErrorService.BadRequest('Аватар не выбран')
+        }
+        if(user.avatar){
             const directoryPath = path.resolve(__dirname, '../../../', 'assets/userAvatars');
             const user = await UserModel.findOne({where: {id}})
             const oldAvatar = user?.avatar
@@ -25,7 +28,7 @@ const userService = {
         }else{
             await UserModel.update({avatar}, {where: {id}});
         }
-        return
+        return avatar
     },
     updateUser: async(id: string, userObj: IUser) => {
         await isUserExist(id)

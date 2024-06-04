@@ -23,7 +23,7 @@ interface IUserModel
   surname: string;
   password: string;
   phone: string;
-  avatar?: string;
+  avatar?: string | null;
   patronymic?: string;
   telegram_id?: string;
   active?: boolean;
