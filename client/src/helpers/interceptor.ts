@@ -37,9 +37,9 @@ api.interceptors.response.use(
         return response;
     },
     async (error) => {
-        // if (error.response && error.response.status === 500){
-
-        // }
+        if (error.response && [500, 400, 403, 401].includes(error.response.status)){
+            error.message = error.response.data
+        }
         if (error.response && error.response.status === 401) {
                 try {
                     const newAuthToken = await refreshAuthToken(); // Replace with your function to refresh the token

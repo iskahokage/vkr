@@ -8,6 +8,7 @@ import redisClient from "./db/redis";
 import ErrorService from "./helpers/errorService";
 import helmet from "helmet";
 import cors from "cors";
+import ErrorMiddleware from './middlewares/error'
 dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +27,7 @@ app.use(
     })
 );
 app.use("/api/v1", router);
+app.use(ErrorMiddleware)
 
 app.listen(port, async () => {
     try {
