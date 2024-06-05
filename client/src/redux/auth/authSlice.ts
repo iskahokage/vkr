@@ -17,8 +17,7 @@ export const login = createAsyncThunk<IUser, IUserCredentials>(
     "auth/login",
     async (credentials: IUserCredentials) => {
         try {
-            const { data } = await api.post(baseUrl + "/auth/user/login", {email: credentials.email, password: credentials.password});
-            console.log(data)
+            const { data } = await api.post(baseUrl + "/auth/login", {email: credentials.email, password: credentials.password});
             return data;
         } catch (error) {
             console.error('Token refresh failed:', error)
@@ -40,19 +39,21 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       localStorage.setItem('user', JSON.stringify(action.payload.user));
     },
+    setNewAvatar(state, action: PayloadAction<{avatar: string}>){
+      console.log(action)
+      state.user = {
+        ...state.user as IUser,
+        avatar: action.payload.avatar
+      }
+      localStorage.setItem('user', JSON.stringify(state.user));
+    },
     logout(state) {
       state.user = null;
       state.isAuthenticated = false;
       localStorage.removeItem('user');
     },
   },
-  extraReducers: (builder) => {
-    builder
-        .addCase(login.fulfilled, (state, action) => {
-            state.user = action.payload;
-        })
-  }
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { setUser, logout, setNewAvatar } = authSlice.actions;
 export default authSlice.reducer;

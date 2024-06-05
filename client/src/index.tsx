@@ -1,3 +1,5 @@
+import  store from "./redux/store";
+import { Provider } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -6,8 +8,6 @@ import "primereact/resources/themes/lara-light-blue/theme.css"; // theme
 import "primereact/resources/primereact.css"; // core css
 import "primeicons/primeicons.css"; // icons
 import "primeflex/primeflex.css";
-import { Provider } from "react-redux";
-import  store from "./redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(

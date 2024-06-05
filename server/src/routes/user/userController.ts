@@ -8,8 +8,8 @@ const userController = {
         try {
             const { id } = req.user;
             const filename = req.file?.filename;
-            await userService.uploadAvatar(id, filename as string);
-            res.json({ msg: "Success" });
+            const result = await userService.uploadAvatar(id, filename as string);
+            res.json({ avatar: result });
         } catch (error) {
             next(error);
         }

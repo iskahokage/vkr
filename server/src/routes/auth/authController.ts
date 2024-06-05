@@ -58,6 +58,19 @@ const authController = {
         } catch (error) {
             next(error)
         }
+    },
+
+    changePassword: async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {oldPassword, password, confirmPassword} = req.body;
+
+            const {id} = req.user;
+
+            await authService.changePassword(oldPassword, password, confirmPassword, id)
+            res.json('Пароль изменен')
+        } catch (error) {
+            next(error)
+        }
     }
 };
 export default authController;
