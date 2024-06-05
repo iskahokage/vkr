@@ -50,7 +50,16 @@ const userController = {
         } catch (error) {
             next(error)
         }
-    }
+    },
+    fetchGRS: async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {pin} = req.body
+            const result = await userService.fetchGRS(pin)
+            res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }, 
 };
 
 export default userController;

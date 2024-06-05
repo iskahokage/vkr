@@ -8,6 +8,7 @@ import { AppDispatch } from "../../redux/store";
 import { logout } from "../../redux/auth/authSlice";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
+import { Menubar } from 'primereact/menubar';
 const Header = () => {
     const navigate = useNavigate();
     const cm = useRef<ContextMenu>(null);
@@ -27,27 +28,30 @@ const Header = () => {
 
     const items = [
         {
-            label: "Company",
-            root: true,
+            label: "Главная",
+            // root: true,
+            command: () => navigate("/"),
         },
         {
             label: "Resources",
-            root: true,
+            // root: true,
+            command: () => navigate("/profile"),
         },
         {
             label: "Contact",
-            root: true,
+            // root: true,
+            command: () => navigate("/login"),
         },
     ];
     const cmItems = [
-        { label: "Личный Кабинет", icon: "pi pi-user", command: () => navigate('/profile') },
+        { label: "Личный Кабинет", icon: "pi pi-user", command: () => navigate("/profile") },
         { label: "Выйти", icon: "pi pi-sign-out", command: logoutUser },
     ];
 
     const start = <p className="font-bold text-2xl">ВКР КНУ</p>;
 
     const end = user ? (
-        <Avatar image={baseUrl + "/user/avatar/" + user?.avatar} shape="circle" size="xlarge" onClick={showCM} />
+        <Avatar image={baseUrl + "/user/avatar/" + user?.avatar} shape="circle" size="xlarge" className="mt-1" onClick={showCM} />
     ) : (
         <NavLink to={"/login"}>
             <Button type="submit" className="text-center block" rounded>
@@ -59,15 +63,15 @@ const Header = () => {
     return (
         <>
             <ContextMenu model={cmItems} ref={cm} breakpoint="767px" />
-            <MegaMenu
-                model={items}
-                start={start}
-                end={end}
-                orientation="horizontal"
-                breakpoint="960px"
-                className="h-5rem p-3  m-3 surface-0 shadow-2"
-                style={{ borderRadius: "3rem" }}
-            />
+            <div>
+                <Menubar
+                    model={items}
+                    start={start}
+                    end={end}
+                    className="h-5rem p-3  m-3 surface-0 shadow-2"
+                    style={{ borderRadius: "3rem" }}
+                />
+            </div>
         </>
     );
 };

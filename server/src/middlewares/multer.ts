@@ -30,5 +30,4 @@ const storage = multer.diskStorage({
 
 // Создаем инстанс multer
 const fileMiddleware = multer({ storage });
-
 export default fileMiddleware;

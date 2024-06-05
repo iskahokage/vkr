@@ -1,12 +1,14 @@
-import React, { ChangeEvent, FC, MouseEvent, useState } from "react";
+import React, { ChangeEvent, FC, MouseEvent, useRef, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { IResetPassword } from "../../types/user";
 import { useAppDispatch } from "../../redux/hooks";
 import { AppDispatch } from "../../redux/store";
 import { changePassword } from "../../redux/user/userSlice";
+import { Toast } from "primereact/toast";
 const PasswordReset: FC = () => {
 
+    const toast = useRef<Toast>(null)
     const dispatch: AppDispatch = useAppDispatch()
 
     const [newPassword, setNewPassword] = useState<IResetPassword>({
@@ -17,7 +19,6 @@ const PasswordReset: FC = () => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         const name = e.target.name
-        console.log(newPassword)
         setNewPassword(prev => ({
             ...prev,
             [name]: value
@@ -26,11 +27,12 @@ const PasswordReset: FC = () => {
 
     const resetPassword = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        dispatch(changePassword(newPassword))
+        dispatch(changePassword({newPassword, toast}))
     }
 
     return (
         <div className="col-6">
+            <Toast ref={toast}/>
             <p>Сбросить пароль</p>
             <div className="col-3 flex flex-column">
                 <label htmlFor="oldPassword">Старый пароль</label>

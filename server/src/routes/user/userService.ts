@@ -3,6 +3,7 @@ import { IUser, UserModel } from "../../db/models/userModel"
 import ErrorService from "../../helpers/errorService"
 import { unlink } from "fs/promises"
 import redisClient, { getOrSetCache } from "../../db/redis"
+import axios from "axios"
 
 export const isUserExist = async(id: string) => {
     const user = await UserModel.findOne({where: {id}})
@@ -52,7 +53,18 @@ const userService = {
         const random = Math.floor(Math.random() * count) + 1;
         const result = await userService.getOne(String(random))
         return result;
-    }
+    },
+    fetchGRS: async(pin: string) => {
+        const formData = new FormData()
+        formData.append('pin', pin)
+        console.log(formData)
+        const {data} = await axios.post('https://swis2.trade.kg/ru/api/v1/user/info', formData, {
+            headers: {
+                token: process.env.GRS_TOKEN
+            }
+        })
+        return data
+    },
 }
 
 export default userService

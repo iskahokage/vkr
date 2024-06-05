@@ -9,7 +9,6 @@ import { patchAvatar } from "../../redux/user/userSlice";
 import { setNewAvatar } from "../../redux/auth/authSlice";
 import { base64ToFile } from "../../helpers";
 import PasswordReset from "../../components/PasswordReset/PasswordReset";
-import Popup from "../../components/Popup/Popup";
 
 const Profile: FC = () => {
     const { user } = useAppSelector(({ auth }) => auth);

@@ -7,6 +7,7 @@ import authMiddleware from "../../middlewares/auth";
 const userRouter: IRouter = express.Router();
 
 userRouter.get('/', userController.getAll)
+userRouter.post('/grs', fileMiddleware.single('pin'), userController.fetchGRS)
 userRouter.get('/random', userController.getRandomUser)
 userRouter.get('/:id', userController.getOne)
 userRouter.use('/avatar/', express.static(path.resolve(__dirname, '../../../','assets/userAvatars')))

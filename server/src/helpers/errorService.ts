@@ -7,7 +7,7 @@ class ErrorService extends Error{
         this.errors = errors;
     }
     static BadRequest = (message: string, errors =[]) =>{
-        return new ErrorService(400, message, errors);
+        return new ErrorService(400, message);
     }
     static UnauthorizedError = () =>{
         return new ErrorService(401, 'You are not authorized')
