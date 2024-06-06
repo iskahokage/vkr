@@ -36,7 +36,7 @@ app.listen(port, async () => {
         });
         await redisClient.connect();
         await sequelize.authenticate();
-        await sequelize.sync({ force: false });
+        await sequelize.sync({ force: true });
         console.log(`[server]: Server is running at http://localhost:${port}`);
     } catch (error) {
         console.log(error);

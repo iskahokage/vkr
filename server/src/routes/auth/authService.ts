@@ -7,14 +7,14 @@ import { isUserExist } from "../user/userService";
 // import TokenService from "./helpers/tokenService.js";
 
 const authService = {
-    register: async ({ email, name, surname, phone, patronymic = "", password }: IUser) => {
+    register: async ({ email, name, surname, phone, patronymic = "", password, address, passport,  }: IUser) => {
         const oldUser = await UserModel.findOne({ where: { email } });
         if (oldUser) {
             throw ErrorService.BadRequest("User with this email already registered!");
         }
         const hashedPassword: string = await hash(password, 3);
 
-        const newUser = await UserModel.create({ email, password: hashedPassword, phone, name, surname, patronymic });
+        const newUser = await UserModel.create({ email, password: hashedPassword, phone, name, surname, patronymic, address, passport });
         return newUser;
     },
     login: async (email: string, password: string) => {

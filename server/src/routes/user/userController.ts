@@ -18,8 +18,8 @@ const userController = {
     updateUser: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const {id} = req.user; 
-            const {email, name, password, phone, surname, patronymic, telegram_id, role}: IUser = req.body
-            const result = await userService.updateUser(id, {email, name, password, phone, surname, patronymic, telegram_id, role})
+            const {email, name, password, phone, surname, patronymic, telegram_id, role, address, passport}: IUser = req.body
+            const result = await userService.updateUser(id, {email, name, password, phone, surname, patronymic, telegram_id, role, address, passport})
             res.json(result)
         } catch (error) {
             next(error)

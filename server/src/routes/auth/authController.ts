@@ -4,11 +4,11 @@ import { IUser } from "../../db/models/userModel";
 import ErrorService from "../../helpers/errorService";
 
 const authController = {
-    register: async (req: Request<IUser>, res: Response, next: NextFunction) => {
+    register: async (req: Request<any, any, IUser>, res: Response, next: NextFunction) => {
         try {
-            const { email, password, phone, name, surname } = req.body;
+            const { email, password, phone, name, surname, address, passport } = req.body;
             console.log(req.body);
-            await authService.register({ email, password, phone, name, surname });
+            await authService.register({ email, password, phone, name, surname, address, passport });
             return res.json({ message: "User Created" });
         } catch (error) {
             next(error);
@@ -50,27 +50,27 @@ const authController = {
 
     logout: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            res.cookie("refreshToken", '', {
+            res.cookie("refreshToken", "", {
                 httpOnly: true,
                 maxAge: 0,
             });
-            return res.json('logout')
+            return res.json("logout");
         } catch (error) {
-            next(error)
+            next(error);
         }
     },
 
-    changePassword: async(req: Request, res: Response, next: NextFunction) => {
+    changePassword: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const {oldPassword, password, confirmPassword} = req.body;
+            const { oldPassword, password, confirmPassword } = req.body;
 
-            const {id} = req.user;
+            const { id } = req.user;
 
-            await authService.changePassword(oldPassword, password, confirmPassword, id)
-            res.json('Пароль изменен')
+            await authService.changePassword(oldPassword, password, confirmPassword, id);
+            res.json("Пароль изменен");
         } catch (error) {
-            next(error)
+            next(error);
         }
-    }
+    },
 };
 export default authController;
