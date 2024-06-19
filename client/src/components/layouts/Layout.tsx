@@ -9,10 +9,9 @@ const Layout = () => {
         <div>
             <Header />
             <div style={{
-                height: "calc(100vh - 15rem)"
+                minHeight: "calc(100vh - 15rem)"
             }}>
                 <Outlet />
-                <UserRegistration/>
             </div>
             <Footer />
         </div>

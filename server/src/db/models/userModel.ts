@@ -20,7 +20,7 @@ interface IUserModel extends Model<InferAttributes<IUserModel>, InferCreationAtt
     telegram_id?: string;
     active?: boolean;
     role?: UserRole;
-    passport: string;
+    tin: string;
     address: string;
 }
 export interface IUser {
@@ -35,8 +35,9 @@ export interface IUser {
     telegram_id?: string;
     active?: boolean;
     role?: UserRole;
-    passport: string;
+    tin: string;
     address: string;
+    legal_registered?: IUserAddress
 }
 export const UserModel = sequelize.define<IUserModel>("user", {
     id: {
@@ -80,7 +81,7 @@ export const UserModel = sequelize.define<IUserModel>("user", {
         defaultValue: true,
         allowNull: false,
     },
-    passport: {
+    tin: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -111,7 +112,7 @@ interface IUserAddressModel extends Model<InferAttributes<IUserAddressModel>, In
 }
 
 export interface IUserAddress {
-    id: number;
+    id?: number;
     userId: number;
     country: string;
     region: string;
@@ -139,7 +140,7 @@ userId: {
     }
 },
     country: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
     },
     region: {

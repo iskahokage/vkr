@@ -33,9 +33,9 @@ const Header = () => {
             command: () => navigate("/"),
         },
         {
-            label: "Resources",
+            label: "Добавление нового пользователя",
             // root: true,
-            command: () => navigate("/profile"),
+            command: () => navigate("/new-user"),
         },
         {
             label: "Contact",

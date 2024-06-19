@@ -2,14 +2,23 @@ import { NextFunction, Request, Response } from "express";
 import authService from "./authService";
 import { IUser } from "../../db/models/userModel";
 import ErrorService from "../../helpers/errorService";
+import { validationResult } from "express-validator";
 
 const authController = {
     register: async (req: Request<any, any, IUser>, res: Response, next: NextFunction) => {
         try {
-            const { email, password, phone, name, surname, address, passport } = req.body;
-            console.log(req.body);
-            await authService.register({ email, password, phone, name, surname, address, passport });
-            return res.json({ message: "User Created" });
+            const result = validationResult(req);
+
+            console.log(result)
+            
+            if(result.isEmpty()){
+                const { email, password, phone, name, surname, address, tin } = req.body;
+                await authService.register({ email, password, phone, name, surname, address, tin });
+                return res.json({ message: "User Created" });
+            }
+            else{
+                throw ErrorService.BadRequest(result.array()[0].msg)
+            }
         } catch (error) {
             next(error);
         }

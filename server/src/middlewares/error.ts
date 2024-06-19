@@ -6,6 +6,6 @@ const errorMiddleware = (err: any, req: Request, res: Response, next: NextFuncti
       return res.status(err.status).json(err.message);
     }
   
-    return res.status(500).json({  message: "Internal server error"  });
+    return res.status(500).json({  err: err.message  });
   };
 export default errorMiddleware

@@ -9,3 +9,5 @@ export const  base64ToFile = (base64String: string, filename: string): File => {
     }
     return new File([u8arr], filename, { type: mime });
 }
+
+export const roleOptions = [{key: 'user', label: 'Пользователь'}, {key: 'admin', label: 'Администратор'}]

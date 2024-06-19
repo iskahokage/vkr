@@ -1,5 +1,5 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IResetPassword} from '../../types/user';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { INewUser, IResetPassword} from '../../types/user';
 import api, { baseUrl } from '../../helpers/interceptor';
 import { RefObject } from 'react';
 import { Toast } from 'primereact/toast';
@@ -17,7 +17,6 @@ export const fetchUserGRS = createAsyncThunk<any, FormData>(
                     // Authorization: process.env.REACT_APP_GRS_TOKEN
                 }
             });
-            console.log(data)
             return data
         } catch (error) {
             console.error('Upload Failed', error)
@@ -59,3 +58,44 @@ export const changePassword = createAsyncThunk<any, changePassArgs>(
         }
     }
 )
+
+interface newUserArgs {
+    userData: INewUser,
+    toast: RefObject<Toast>
+}
+
+export const createUser = createAsyncThunk<any, newUserArgs>(
+    'createUser/post',
+    async({userData, toast}) =>{
+        try {
+            const { data }= await api.post(baseUrl + "/auth/register", userData);
+            return data
+        } catch (error) {
+            const err = error as AxiosError;
+            toast.current?.show({ severity: "error", summary: "Error", detail: JSON.stringify(err.message), life: 3000 });
+        }
+    }
+)
+
+
+const initialState = {
+    spin: false,
+}
+
+const userSlice = createSlice({
+    name: "user",
+    initialState,
+    reducers: {
+
+    },
+    extraReducers: (builder) => {
+        builder
+        .addCase(fetchUserGRS.pending, (state) => {
+            state.spin = true;
+        })
+        .addCase(fetchUserGRS.fulfilled, (state) => {
+            state.spin = false;
+        })
+    }
+});
+export default userSlice.reducer;
