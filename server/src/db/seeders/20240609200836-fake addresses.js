@@ -9,7 +9,7 @@ module.exports = {
     for (let i = 0; i < 100; i++) {
       address.push({
         userId: i+1,
-        country: faker.location.country(),
+        country: faker.location.countryCode('numeric'),
         region:faker.location.state(),
         district:faker.location.city(),
         city: faker.location.city(),

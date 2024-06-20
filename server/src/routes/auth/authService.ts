@@ -1,4 +1,4 @@
-import { IUser, UserModel } from "../../db/models/userModel";
+import { IUser, UserLegalRegisteredModel, UserModel } from "../../db/models/userModel";
 import ErrorService from "../../helpers/errorService";
 import { compare, hash } from "bcryptjs";
 import TokenService from "../../helpers/tokenService";
@@ -42,6 +42,19 @@ const authService = {
             address,
             tin,
         });
+
+        await UserLegalRegisteredModel.create({
+            userId: newUser.id, 
+            country: legal_registered.country,
+            region: legal_registered.region,
+            district: legal_registered.district,
+            city: legal_registered.city,
+            street: legal_registered.street,
+            house: legal_registered.house,
+            room: legal_registered.room,
+            postcode: legal_registered.postcode,
+            mailbox_number: legal_registered.mailbox_number,
+        })
         return newUser;
     },
     login: async (email: string, password: string) => {

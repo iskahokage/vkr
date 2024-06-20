@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { INewUser, IResetPassword} from '../../types/user';
+import { INewUser, IResetPassword, IUserState} from '../../types/user';
 import api, { baseUrl } from '../../helpers/interceptor';
 import { RefObject } from 'react';
 import { Toast } from 'primereact/toast';
 import axios, { AxiosError } from 'axios';
+import { emptyUser } from '../../types/userJSON';
 
 // Attempt to retrieve and parse user data from localStorage
 
@@ -76,10 +77,52 @@ export const createUser = createAsyncThunk<any, newUserArgs>(
         }
     }
 )
+export const updateUser = createAsyncThunk<any, newUserArgs>(
+    'updateUser/patch',
+    async({userData, toast}) =>{
+        try {
+            const { data }= await api.patch(baseUrl + "/user/update/" + userData.id, userData);
+            return data
+        } catch (error) {
+            const err = error as AxiosError;
+            toast.current?.show({ severity: "error", summary: "Error", detail: JSON.stringify(err.message), life: 3000 });
+        }
+    }
+)
 
 
-const initialState = {
+export const fetchUserList =  createAsyncThunk<any, {toast: RefObject<Toast>}>(
+    'fetchUserList/get',
+    async({toast}) => {
+        try {
+            const { data }= await api.get(baseUrl + "/user");
+            return data
+        } catch (error) {
+            const err = error as AxiosError;
+            toast.current?.show({ severity: "error", summary: "Error", detail: JSON.stringify(err.message), life: 3000 });
+        }
+    }
+)
+export const fetchUser =  createAsyncThunk<any, {toast: RefObject<Toast>, id: string}>(
+    'fetchUser/get',
+    async({toast, id}) => {
+        try {
+            const { data }= await api.get(baseUrl + "/user/" + id);
+            return data
+        } catch (error) {
+            const err = error as AxiosError;
+            toast.current?.show({ severity: "error", summary: "Error", detail: JSON.stringify(err.message), life: 3000 });
+        }
+    }
+)
+
+
+
+
+const initialState: IUserState = {
     spin: false,
+    userList: [],
+    user: emptyUser
 }
 
 const userSlice = createSlice({
@@ -95,6 +138,28 @@ const userSlice = createSlice({
         })
         .addCase(fetchUserGRS.fulfilled, (state) => {
             state.spin = false;
+        })
+        .addCase(fetchUserList.pending, (state) => {
+            state.spin = true;
+        })
+        .addCase(fetchUserList.fulfilled, (state, {payload}) => {
+            state.spin = false;
+            state.userList = payload
+        })
+        .addCase(fetchUserList.rejected, (state, {payload}) => {
+            state.spin = false;
+            state.userList = []
+        })
+        .addCase(fetchUser.pending, (state) => {
+            state.spin = true;
+        })
+        .addCase(fetchUser.fulfilled, (state, {payload}) => {
+            state.spin = false;
+            state.user = payload
+        })
+        .addCase(fetchUser.rejected, (state, {payload}) => {
+            state.spin = false;
+            state.user = emptyUser
         })
     }
 });

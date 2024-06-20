@@ -1,22 +1,34 @@
-import React, { ChangeEvent, FC, MouseEvent, useRef, useState } from "react";
-import Input from "../Input/Input";
-import { Card } from "primereact/card";
+import {
+    ChangeEvent,
+    FC,
+    MouseEvent,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+import Input from "../../Input/Input";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { Button } from "primereact/button";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { AppDispatch } from "../../redux/store";
-import { fetchUserGRS } from "../../redux/user/userSlice";
-import { IGRSResponse, INewUser, IUser } from "../../types/user";
-import { roleOptions } from "../../helpers";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { AppDispatch } from "../../../redux/store";
+import { fetchUser, fetchUserGRS, updateUser } from "../../../redux/user/userSlice";
+import { IGRSResponse, INewUser } from "../../../types/user";
+import { roleOptions } from "../../../helpers";
 import { ProgressSpinner } from "primereact/progressspinner";
 import UserAddress from "./UserAddress";
-import { createUser as postUser } from "../../redux/user/userSlice";
+import { createUser as postUser } from "../../../redux/user/userSlice";
 import { Toast } from "primereact/toast";
+import { useParams } from "react-router-dom";
+import { emptyUser } from "../../../types/userJSON";
 
 const UserRegistration: FC = () => {
     const toast = useRef<Toast>(null);
-    const { spin } = useAppSelector(({ user }) => user);
+    const { id } = useParams();
+
+    const { countries } = useAppSelector(({ refs }) => refs);
+    const { spin, user } = useAppSelector(({ user }) => user);
+
     const [userData, setUserData] = useState<INewUser>({
         email: "",
         name: "",
@@ -44,6 +56,19 @@ const UserRegistration: FC = () => {
         },
     });
     const dispatch: AppDispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (id && !user?.id || id != user?.id) {
+            if(id)
+                dispatch(fetchUser({ toast, id: id as string }));
+        }
+        if (user?.id) {
+            setUserData({ ...user });
+        }
+        if (!id) {
+            setUserData(emptyUser);
+        }
+    }, [id, user?.id]);
 
     const onClick = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -75,15 +100,37 @@ const UserRegistration: FC = () => {
         }));
     };
 
-    const createUser = (e: MouseEvent<HTMLFormElement>) => {
+    const editUser = (e: MouseEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(postUser({ userData, toast }));
+        const address = userData.legal_registered;
+        const country = countries.filter((el) => el.id === address.country)[0]?.name;
+        if (id) {
+            dispatch(
+                updateUser({
+                    userData: {
+                        ...userData,
+                        address: `${address.house}, ул. ${address.street}, ${address.city}, ${address.district} р-н., ${address.region}, ${country}`,
+                    },
+                    toast,
+                })
+            );
+        }else{
+            dispatch(
+                postUser({
+                    userData: {
+                        ...userData,
+                        address: `${address.house}, ул. ${address.street}, ${address.city}, ${address.district} р-н., ${address.region}, ${country}`,
+                    },
+                    toast,
+                })
+            );
+        }
     };
 
     return (
         <>
             <Toast ref={toast} />
-            <form onSubmit={createUser} className="col-12 flex flex-column">
+            <form onSubmit={editUser} className="col-12 flex flex-column">
                 <div className="col-12 flex-wrap flex lg:col-3 lg:flex-nowrap">
                     <div className="flex grid col-12">
                         <div className="col-10 p-0">
@@ -196,14 +243,16 @@ const UserRegistration: FC = () => {
                 <Accordion activeIndex={0}>
                     <AccordionTab header="Адресные данные">
                         <UserAddress
-                            address={userData.legal_registered}
+                            address={userData?.legal_registered}
                             setUserData={setUserData}
                         />
                     </AccordionTab>
                 </Accordion>
                 <Button
                     className="mt-2"
-                    label="Создать пользователя"
+                    label={
+                        id ? "Изменить пользователя" : "Создать пользователя"
+                    }
                     type="submit"
                 />
             </form>

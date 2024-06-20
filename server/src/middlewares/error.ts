@@ -5,7 +5,6 @@ const errorMiddleware = (err: any, req: Request, res: Response, next: NextFuncti
     if (err instanceof ErrorService) {
       return res.status(err.status).json(err.message);
     }
-  
     return res.status(500).json({  err: err.message  });
   };
 export default errorMiddleware

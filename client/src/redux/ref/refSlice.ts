@@ -17,7 +17,17 @@ export const fetchCountries = createAsyncThunk<any, {toast: RefObject<Toast>}>(
     }
 )
 
-const initialState = {
+interface ICountry {
+    id: string,
+    code: string,
+    name: string
+}
+
+interface IRefState {
+    countries: ICountry[]
+}
+
+const initialState: IRefState = {
     countries: [],
 }
 

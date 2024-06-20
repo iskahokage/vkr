@@ -20,5 +20,5 @@ userRouter.patch(
     fileMiddleware.single("avatar"),
     userController.uploadAvatar
 );
-userRouter.patch("/update", authMiddleware, userController.updateUser);
+userRouter.patch("/update/:id", authMiddleware, userController.updateUser);
 export default userRouter;

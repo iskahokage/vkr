@@ -37,7 +37,7 @@ export interface IUser {
     role?: UserRole;
     tin: string;
     address: string;
-    legal_registered?: IUserAddress
+    legal_registered: IUserAddress
 }
 export const UserModel = sequelize.define<IUserModel>("user", {
     id: {
@@ -49,14 +49,23 @@ export const UserModel = sequelize.define<IUserModel>("user", {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+            isEmail: true,
+        }
     },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notEmpty: true,
+        }
     },
     surname: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notEmpty: true,
+        }
     },
     patronymic: {
         type: DataTypes.STRING,
@@ -64,6 +73,12 @@ export const UserModel = sequelize.define<IUserModel>("user", {
     password: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notEmpty: true,
+            is: /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*\d).+$/,
+            min: 4,
+            max: 20
+        }
     },
     avatar: {
         type: DataTypes.STRING,
@@ -84,26 +99,35 @@ export const UserModel = sequelize.define<IUserModel>("user", {
     tin: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notEmpty: true,
+        }
     },
     address: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notEmpty: true,
+        }
     },
     role: {
         type: DataTypes.ENUM("admin", "user"),
         defaultValue: "user",
         allowNull: false,
+        validate: {
+            notEmpty: true,
+        }
     },
 });
 
 interface IUserAddressModel extends Model<InferAttributes<IUserAddressModel>, InferCreationAttributes<IUserAddressModel>> {
   id: CreationOptional<Number>;
   userId: number;
-    country: string;
+    country: number;
     region: string;
     district: string;
     city: string;
-    locality: string;
+    locality?: string;
     street?: string | null;
     house?: string;
     room?: string;
@@ -114,7 +138,7 @@ interface IUserAddressModel extends Model<InferAttributes<IUserAddressModel>, In
 export interface IUserAddress {
     id?: number;
     userId: number;
-    country: string;
+    country: number;
     region: string;
     district: string;
     city: string;
@@ -140,7 +164,7 @@ userId: {
     }
 },
     country: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     region: {

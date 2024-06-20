@@ -12,8 +12,8 @@ const authController = {
             console.log(result)
             
             if(result.isEmpty()){
-                const { email, password, phone, name, surname, address, tin } = req.body;
-                await authService.register({ email, password, phone, name, surname, address, tin });
+                const { email, password, phone, name, surname, address, tin, legal_registered } = req.body;
+                await authService.register({ email, password, phone, name, surname, address, tin, legal_registered });
                 return res.json({ message: "User Created" });
             }
             else{

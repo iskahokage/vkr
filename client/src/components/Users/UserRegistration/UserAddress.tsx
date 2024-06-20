@@ -7,13 +7,13 @@ import React, {
     useRef,
     useState,
 } from "react";
-import Input from "../Input/Input";
-import { INewUser, IUserAddress } from "../../types/user";
+import Input from "../../Input/Input";
+import { INewUser, IUserAddress } from "../../../types/user";
 import { FunctionDeclaration } from "typescript";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { AppDispatch } from "../../redux/store";
-import { fetchCountries } from "../../redux/ref/refSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { AppDispatch } from "../../../redux/store";
+import { fetchCountries } from "../../../redux/ref/refSlice";
 import { Toast } from "primereact/toast";
 
 interface UserAddressArgs {
@@ -45,42 +45,35 @@ const UserAddress: FC<UserAddressArgs> = ({ address, setUserData }) => {
         <>
             <Toast ref={toast}/>
             <div className="col-12 flex-wrap flex lg:col-3 lg:flex-nowrap">
-                <Input
-                    value={address.country}
-                    id="country"
-                    name="country"
-                    label="Страна"
-                    handleChange={handleChange}
-                />
                 <div className="col-12 flex flex-column">
                     <label htmlFor="role">Страна</label>
                     <Dropdown
                         filter
                         id="country"
                         onChange={handleChange}
-                        value={address.country}
+                        value={address?.country}
                         options={countries}
                         optionLabel="name"
-                        optionValue="name"
+                        optionValue="id"
                         name="country"
                     />
                 </div>
                 <Input
-                    value={address.region}
+                    value={address?.region}
                     id="region"
                     name="region"
                     label="Регион"
                     handleChange={handleChange}
                 />
                 <Input
-                    value={address.district}
+                    value={address?.district}
                     id="district"
                     name="district"
                     label="Район"
                     handleChange={handleChange}
                 />
                 <Input
-                    value={address.city}
+                    value={address?.city}
                     id="city"
                     name="city"
                     label="Город"
@@ -89,28 +82,28 @@ const UserAddress: FC<UserAddressArgs> = ({ address, setUserData }) => {
             </div>
             <div className="col-12 flex-wrap flex lg:col-3 lg:flex-nowrap">
                 <Input
-                    value={address.street}
+                    value={address?.street}
                     id="street"
                     name="street"
                     label="Улица"
                     handleChange={handleChange}
                 />
                 <Input
-                    value={address.house}
+                    value={address?.house}
                     id="house"
                     name="house"
                     label="Дом"
                     handleChange={handleChange}
                 />
                 <Input
-                    value={address.room}
+                    value={address?.room}
                     id="room"
                     name="room"
                     label="Квартира"
                     handleChange={handleChange}
                 />
                 <Input
-                    value={address.postcode}
+                    value={address?.postcode}
                     id="postcode"
                     name="postcode"
                     label="Почтовый индекс"

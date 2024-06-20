@@ -5,7 +5,8 @@ import Layout from './components/layouts/Layout';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import Profile from './pages/profile/Profile';
-import NewUser from './pages/newUser/newUser';
+import NewUser from './pages/admin/newUser/newUser';
+import UserList from './pages/admin/userList/UserList';
 
 const Router = () => {
     return (
@@ -14,7 +15,11 @@ const Router = () => {
                 <Route element={<Login/>} path='/login'/>
                 <Route element={<Layout/>} path='/'>
                 <Route element={<Profile/>} path='/profile'/>
-                <Route element={<NewUser/>} path='/new-user'/>
+                <Route path='/admin'>
+                <Route element={<NewUser/>} path='/admin/new-user'/>
+                <Route element={<UserList/>} path='/admin/users'/>
+                <Route element={<NewUser/>} path='/admin/user/:id'/>
+                </Route>
                 </Route>
             </Routes>
         </BrowserRouter>

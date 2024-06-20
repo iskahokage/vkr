@@ -17,11 +17,12 @@ const userController = {
 
     updateUser: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const {id} = req.user; 
-            const {email, name, password, phone, surname, patronymic, telegram_id, role, address, tin}: IUser = req.body
-            const result = await userService.updateUser(id, {email, name, password, phone, surname, patronymic, telegram_id, role, address, tin})
+            const {id} = req.params; 
+            const {email, name, password, phone, surname, patronymic, telegram_id, role, address, tin, legal_registered}: IUser = req.body
+            const result = await userService.updateUser(id, {email, name, password, phone, surname, patronymic, telegram_id, role, address, tin, legal_registered})
             res.json(result)
         } catch (error) {
+            console.log(error)
             next(error)
         }
     },
@@ -48,6 +49,7 @@ const userController = {
             const result = await userService.getOne(id)
             res.json(result)
         } catch (error) {
+            console.log(error)
             next(error)
         }
     },

@@ -14,10 +14,17 @@ export interface IUser {
     tin: string;
     address: string,
   }
-export interface IUserState {
+export interface IAuthState {
     user: IUser | null,
     isAuthenticated: boolean
 }
+
+export interface IUserState {
+    userList: IUser[],
+    spin: boolean,
+    user?: INewUser
+}
+
 export interface IUserCredentials {
     email: string,
     password: string

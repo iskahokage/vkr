@@ -33,9 +33,19 @@ const Header = () => {
             command: () => navigate("/"),
         },
         {
-            label: "Добавление нового пользователя",
+            label: "Пользователи",
             // root: true,
-            command: () => navigate("/new-user"),
+            items: [
+                {
+                    label: 'Добавление нового пользователя',
+                    command: () => navigate("/admin/new-user"),
+                },
+                {
+                    label: 'Список пользователей',
+                    command: () => navigate("/admin/users"),
+                }
+
+            ],
         },
         {
             label: "Contact",
