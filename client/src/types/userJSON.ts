@@ -1,0 +1,26 @@
+export const emptyUser = {
+    email: "",
+    name: "",
+    surname: "",
+    patronymic: "",
+    password: "",
+    avatar: "",
+    phone: "",
+    telegram_id: "",
+    active: false,
+    role: "",
+    tin: "",
+    address: "",
+    legal_registered: {
+        country: "",
+        region: "",
+        district: "",
+        city: "",
+        locality: "",
+        street: "",
+        house: "",
+        room: "",
+        postcode: "",
+        mailbox_number: "",
+    }
+}
