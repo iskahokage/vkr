@@ -8,7 +8,8 @@ import { AppDispatch } from "../../redux/store";
 import { logout } from "../../redux/auth/authSlice";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
-import { Menubar } from 'primereact/menubar';
+import { Menubar } from "primereact/menubar";
+import { MenuItem } from "primereact/menuitem";
 const Header = () => {
     const navigate = useNavigate();
     const cm = useRef<ContextMenu>(null);
@@ -26,32 +27,64 @@ const Header = () => {
         }
     };
 
-    const items = [
+    const items: MenuItem[] = [
         {
             label: "Главная",
             // root: true,
             command: () => navigate("/"),
         },
-        {
-            label: "Resources",
+        
+    ];
+
+    if(user?.accessToken){
+        items.push({
+            label: "Мои займы",
             // root: true,
+            command: () => navigate("/user/loans"),
+        })
+    }
+
+    if (user?.role === "admin") {
+        items.push(
+            {
+                label: "Служебные займы",
+                command: () => navigate("/admin/loans"),
+            },
+            {
+                label: "Пользователи",
+                items: [
+                    {
+                        label: "Добавление нового пользователя",
+                        command: () => navigate("/admin/new-user"),
+                    },
+                    {
+                        label: "Список пользователей",
+                        command: () => navigate("/admin/users"),
+                    },
+                ],
+            }
+        );
+    }
+
+    const cmItems = [
+        {
+            label: "Личный Кабинет",
+            icon: "pi pi-user",
             command: () => navigate("/profile"),
         },
-        {
-            label: "Contact",
-            // root: true,
-            command: () => navigate("/login"),
-        },
-    ];
-    const cmItems = [
-        { label: "Личный Кабинет", icon: "pi pi-user", command: () => navigate("/profile") },
         { label: "Выйти", icon: "pi pi-sign-out", command: logoutUser },
     ];
 
     const start = <p className="font-bold text-2xl">ВКР КНУ</p>;
 
     const end = user ? (
-        <Avatar image={baseUrl + "/user/avatar/" + user?.avatar} shape="circle" size="xlarge" className="mt-1" onClick={showCM} />
+        <Avatar
+            image={baseUrl + "/user/avatar/" + user?.avatar}
+            shape="circle"
+            size="xlarge"
+            className="mt-1"
+            onClick={showCM}
+        />
     ) : (
         <NavLink to={"/login"}>
             <Button type="submit" className="text-center block" rounded>

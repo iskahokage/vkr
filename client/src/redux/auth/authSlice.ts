@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUser, IUserCredentials, IUserState } from "../../types/user";
+import { IUser, IUserCredentials, IAuthState } from "../../types/user";
 import api, { baseUrl } from "../../helpers/interceptor";
 import { Toast } from "primereact/toast";
 import { RefObject } from "react";
@@ -35,7 +35,7 @@ export const login = createAsyncThunk<IUser, LoginArgs>(
     }
 );
 
-const initialState: IUserState = {
+const initialState: IAuthState = {
     user: getUserFromLocalStorage(),
     isAuthenticated: !!getUserFromLocalStorage(),
 };

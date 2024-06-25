@@ -1,7 +1,6 @@
 import { Card } from "primereact/card";
 import React, { ChangeEvent, FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import Avatar from "react-avatar-edit";
 import { AppDispatch } from "../../redux/store";
@@ -9,6 +8,7 @@ import { patchAvatar } from "../../redux/user/userSlice";
 import { setNewAvatar } from "../../redux/auth/authSlice";
 import { base64ToFile } from "../../helpers";
 import PasswordReset from "../../components/PasswordReset/PasswordReset";
+import { TabPanel, TabView } from "primereact/tabview";
 
 const Profile: FC = () => {
     const { user } = useAppSelector(({ auth }) => auth);
@@ -24,12 +24,12 @@ const Profile: FC = () => {
         file: null,
     });
 
-
-    
-
     const uploadAvatar = async () => {
         if (avatar.file) {
-            const file = base64ToFile(avatar.preview as string, avatar.file?.name as string);
+            const file = base64ToFile(
+                avatar.preview as string,
+                avatar.file?.name as string
+            );
             const formData = new FormData();
             formData.set("avatar", file);
             const action = await dispatch(patchAvatar(formData));
@@ -74,30 +74,41 @@ const Profile: FC = () => {
 
     return (
         <div className="w-10 mx-auto">
-            <Card title={`Профиль ${user?.surname} ${user?.name} ${user?.patronymic}`}>
-                <div className="formgrid grid">
-                    <div className="col-6">
-                        <div className="mx-auto w-5 flex flex-column justify-content-center">
-                            <p>Поменять аватар</p>
-                            <div className="field">
-                                <Avatar
-                                    width={400}
-                                    height={295}
-                                    onCrop={onCrop}
-                                    onClose={onClose}
-                                    onBeforeFileLoad={onBeforeFileLoad}
-                                    src={avatar.src}
-                                />
+            <Card
+                title={`Профиль ${user?.surname} ${user?.name} ${user?.patronymic}`}
+            >
+                    <TabView>
+                        <TabPanel header="Аватар">
+                            <div>
+                                <div>
+                                    <p>Поменять аватар</p>
+                                    <div className="field flex justify-content-center">
+                                        <Avatar
+                                            width={250}
+                                            height={240}
+                                            onCrop={onCrop}
+                                            onClose={onClose}
+                                            onBeforeFileLoad={onBeforeFileLoad}
+                                            src={avatar.src}
+                                            label='Нажмите для выбора фото'
+                                        />
+                                    </div>
+                                    <div className="sm:col-12 md:col-4 mx-auto">
+                                        <Button
+                                            type="button"
+                                            onClick={uploadAvatar}
+                                            className="text-center block w-full"
+                                        >
+                                            Изменить аватар
+                                        </Button>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col-6 mx-auto">
-                                <Button type="button" onClick={uploadAvatar} className="text-center block w-full">
-                                    Изменить аватар
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                    <PasswordReset/>
-                </div>
+                        </TabPanel>
+                        <TabPanel header="Пароль">
+                            <PasswordReset />
+                        </TabPanel>
+                    </TabView>
             </Card>
         </div>
     );

@@ -6,8 +6,8 @@ class ErrorService extends Error{
         this.status = status;
         this.errors = errors;
     }
-    static BadRequest = (message: string, errors =[]) =>{
-        return new ErrorService(400, message);
+    static BadRequest = (message: string, errors: any =[]) =>{
+        return new ErrorService(400, message, errors);
     }
     static UnauthorizedError = () =>{
         return new ErrorService(401, 'You are not authorized')
@@ -17,9 +17,6 @@ class ErrorService extends Error{
     }
     static ServerInternalError = (message: string) =>{
         return new ErrorService(500, message)
-    }
-    static WrongBookingParameters = () => {
-        return new ErrorService(400, 'Попробуйте выбрать другую дату посещения или изменить количество заявок')
     }
 }
 

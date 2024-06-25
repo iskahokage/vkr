@@ -11,7 +11,7 @@ services:
       # - /app/node_modules
     ports:
       - 3000:3000
-    command: npm run start
+    command: bash -c "npm install && npm run start"
     restart: always
     networks:
       - app
@@ -27,7 +27,7 @@ services:
       # - /app/node_modules
     ports:
       - 8000:8000
-    command: npm run dev
+    command: bash -c "npm install && npm run dev"
     depends_on:
       - postgres
     restart: always
@@ -39,14 +39,11 @@ services:
     env_file:
       - ./server/.env
     environment:
-      DB_PASSWORD: postgres
-      DB_USER: postgres   
-      DB_NAME: vkr
-      PG_DATA: /var/lib/postgresql/data
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres   
+      POSTGRES_DB: vkr
     ports:
       - 5432:5432
-    volumes:
-      - /pgdata:/var/lib/postgresql/data
     restart: always
     networks:
       - app
@@ -58,8 +55,6 @@ services:
     restart: always
     networks:
       - app
-volumes:
-  pgdata:
 networks: 
   app:
     driver: 'bridge'

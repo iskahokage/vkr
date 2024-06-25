@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import sequelize from "./db/db";
 import router from "./routes/router";
 import cookieParser from "cookie-parser";
-import path from "path";
 import redisClient from "./db/redis";
 import ErrorService from "./helpers/errorService";
 import helmet from "helmet";
@@ -15,12 +14,11 @@ const port = process.env.PORT || 3000;
 app.use(
     cors({
         origin: "http://localhost:3000",
-        credentials: true, //access-control-allow-credentials:true
+        credentials: true, 
     })
 );
 app.use(express.json());
 app.use(cookieParser());
-// app.use('/api/v1',express.static(path.resolve(__dirname, '../assets/userAvatars')))
 app.use(
     helmet({
         crossOriginResourcePolicy: false,

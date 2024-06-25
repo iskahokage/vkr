@@ -2,14 +2,23 @@ import { NextFunction, Request, Response } from "express";
 import authService from "./authService";
 import { IUser } from "../../db/models/userModel";
 import ErrorService from "../../helpers/errorService";
+import { validationResult } from "express-validator";
 
 const authController = {
-    register: async (req: Request<IUser>, res: Response, next: NextFunction) => {
+    register: async (req: Request<any, any, IUser>, res: Response, next: NextFunction) => {
         try {
-            const { email, password, phone, name, surname } = req.body;
-            console.log(req.body);
-            await authService.register({ email, password, phone, name, surname });
-            return res.json({ message: "User Created" });
+            const result = validationResult(req);
+
+            console.log(result)
+            
+            if(result.isEmpty()){
+                const { email, password, phone, name, surname, address, tin, legal_registered } = req.body;
+                await authService.register({ email, password, phone, name, surname, address, tin, legal_registered });
+                return res.json({ message: "User Created" });
+            }
+            else{
+                throw ErrorService.BadRequest(result.array()[0].msg)
+            }
         } catch (error) {
             next(error);
         }
@@ -50,27 +59,27 @@ const authController = {
 
     logout: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            res.cookie("refreshToken", '', {
+            res.cookie("refreshToken", "", {
                 httpOnly: true,
                 maxAge: 0,
             });
-            return res.json('logout')
+            return res.json("logout");
         } catch (error) {
-            next(error)
+            next(error);
         }
     },
 
-    changePassword: async(req: Request, res: Response, next: NextFunction) => {
+    changePassword: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const {oldPassword, password, confirmPassword} = req.body;
+            const { oldPassword, password, confirmPassword } = req.body;
 
-            const {id} = req.user;
+            const { id } = req.user;
 
-            await authService.changePassword(oldPassword, password, confirmPassword, id)
-            res.json('Пароль изменен')
+            await authService.changePassword(oldPassword, password, confirmPassword, id);
+            res.json("Пароль изменен");
         } catch (error) {
-            next(error)
+            next(error);
         }
-    }
+    },
 };
 export default authController;

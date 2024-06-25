@@ -1,5 +1,7 @@
 'use strict';
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
+const { faker } = require('@faker-js/faker');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -11,6 +13,8 @@ module.exports = {
         email: 'admin@mail.ru',
         phone: '996500500774',
         role: 'admin',
+        tin: faker.finance.pin(14),
+        address: faker.location.streetAddress(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -21,6 +25,8 @@ module.exports = {
         email: 'test@mail.ru',
         phone: '996500500774',
         role: 'user',
+        tin: faker.finance.pin(14),
+        address: faker.location.streetAddress(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -31,6 +37,8 @@ module.exports = {
         email: 'john@mail.ru',
         phone: '996500500774',
         role: 'user',
+        tin: faker.finance.pin(14),
+        address: faker.location.streetAddress(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -41,6 +49,8 @@ module.exports = {
         email: 'anvar@mail.ru',
         phone: '996500500774',
         role: 'user',
+        tin: faker.finance.pin(14),
+        address: faker.location.streetAddress(),
         createdAt: new Date(),
         updatedAt: new Date(),
       },

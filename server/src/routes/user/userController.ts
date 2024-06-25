@@ -17,11 +17,12 @@ const userController = {
 
     updateUser: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const {id} = req.user; 
-            const {email, name, password, phone, surname, patronymic, telegram_id, role}: IUser = req.body
-            const result = await userService.updateUser(id, {email, name, password, phone, surname, patronymic, telegram_id, role})
+            const {id} = req.params; 
+            const {email, name, password, phone, surname, patronymic, telegram_id, role, address, tin, legal_registered}: IUser = req.body
+            const result = await userService.updateUser(id, {email, name, password, phone, surname, patronymic, telegram_id, role, address, tin, legal_registered})
             res.json(result)
         } catch (error) {
+            console.log(error)
             next(error)
         }
     },
@@ -48,6 +49,7 @@ const userController = {
             const result = await userService.getOne(id)
             res.json(result)
         } catch (error) {
+            console.log(error)
             next(error)
         }
     },
@@ -56,6 +58,15 @@ const userController = {
             const {pin} = req.body
             const result = await userService.fetchGRS(pin)
             res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }, 
+    activity: async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {id} = req.params;
+            const result = await userService.activity(id)
+            return res.json(result)
         } catch (error) {
             next(error)
         }

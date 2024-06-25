@@ -1,8 +1,13 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 const ACCESS_TOKEN_KEY = process.env.ACCESS_TOKEN_KEY as string
 const REFRESH_TOKEN_KEY = process.env.REFRESH_TOKEN_KEY as string
 
+export interface CustomJwtPayload extends JwtPayload {
+  id: string,
+  email: string,
+  role: string,
+}
 class TokenService {
   static generateTokens = (data: any) => {
     const accessToken = jwt.sign(data, ACCESS_TOKEN_KEY, { expiresIn: '24h' });
