@@ -62,6 +62,15 @@ const userController = {
             next(error)
         }
     }, 
+    activity: async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {id} = req.params;
+            const result = await userService.activity(id)
+            return res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }, 
 };
 
 export default userController;

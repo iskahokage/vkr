@@ -28,7 +28,7 @@ const UserAddress: FC<UserAddressArgs> = ({ address, setUserData }) => {
     const toast = useRef<Toast>(null)
     const dispatch: AppDispatch = useAppDispatch()
     useEffect(() => {
-        if(countries.length === 0)
+        if(countries?.length === 0)
             dispatch(fetchCountries({toast}))
     }, [])
 

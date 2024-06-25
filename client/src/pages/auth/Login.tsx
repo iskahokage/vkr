@@ -8,7 +8,7 @@ import { login, setUser } from "../../redux/auth/authSlice";
 import { IUser, IUserCredentials } from "../../types/user";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { AppDispatch } from "../../redux/store";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { Toast } from "primereact/toast";
 
 const Login = () => {
@@ -52,10 +52,10 @@ const Login = () => {
     };
 
     return (
-        user ? <></> : <div className="w-4 mx-auto flex flex-column justify-content-center h-screen ">
+        user ? <></> : <div className="px-4 w-20rem mx-auto flex flex-column justify-content-center h-screen ">
             <Toast ref={toast}/>
-            <Card title="Авторизация">
-                <form onSubmit={handleSubmit} className="formgrid grid w-25rem mx-auto gap-3">
+            <Card title="Авторизация" className="text-sm">
+                <form onSubmit={handleSubmit} className="formgrid grid mx-auto gap-3">
                     <div className="col-12 flex flex-column">
                         <label htmlFor="email">e-mail</label>
                         <InputText onChange={handleChange} name="email" id="email" className="field" />

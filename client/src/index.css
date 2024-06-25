@@ -21,8 +21,8 @@ a {
     margin: 0 auto;
 }
 @media screen and (max-width: 990px) {
-    p, body, span, label {
-        font-size: 12px !important;
+    p, body, span, label, th, td, input {
+        font-size: 10px !important;
     }
 }
 

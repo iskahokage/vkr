@@ -1,6 +1,5 @@
-type UserRole = 'user' | 'admin'
 export interface IUser {
-    id?: number;
+    id?: number | string;
     email: string;
     name: string;
     surname: string;
@@ -13,6 +12,7 @@ export interface IUser {
     role?: string;
     tin: string;
     address: string,
+    accessToken?: string,
   }
 export interface IAuthState {
     user: IUser | null,

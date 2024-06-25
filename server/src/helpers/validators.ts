@@ -16,3 +16,9 @@ export const registerValidation = [
     body('legal_registered.district').notEmpty().withMessage("Please provide a district"),
 
 ];
+
+export const loanValidation = [
+    body("tool").isLength({ min: 3, max: 20 }).withMessage('Tool name must be 3-20 symbols'),
+    body("serialNumber").isLength({min: 8, max: 20}).withMessage('Serial Number must be 8-20 symbols'),
+    body("loanDate").notEmpty().withMessage('Loan Date is empty'),
+]

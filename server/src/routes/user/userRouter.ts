@@ -3,6 +3,7 @@ import fileMiddleware from "../../middlewares/multer";
 import path from "path";
 import userController from "./userController";
 import authMiddleware from "../../middlewares/auth";
+import roleMiddleware from "../../middlewares/role";
 
 const userRouter: IRouter = express.Router();
 
@@ -20,5 +21,6 @@ userRouter.patch(
     fileMiddleware.single("avatar"),
     userController.uploadAvatar
 );
-userRouter.patch("/update/:id", authMiddleware, userController.updateUser);
+userRouter.patch("/update/:id", roleMiddleware(['admin']), userController.updateUser);
+userRouter.patch("/activity/:id", roleMiddleware(['admin']), userController.activity)
 export default userRouter;

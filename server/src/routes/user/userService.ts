@@ -132,20 +132,19 @@ const userService = {
         return result;
     },
     getOne: async (id: string) => {
-        const user = await getOrSetCache(`user:${id}`, async () => {
-            const foundUser = await UserModel.findOne({
-                where: { id },
-                attributes: { exclude: ["password"] },
-                include: {
-                    model: UserLegalRegisteredModel,
-                    where: { userId: id },
-                    required: false
-                },
-            });
-            console.log(foundUser)
-            return foundUser?.dataValues;
+        // const user = await getOrSetCache(`user:${id}`, async () => {
+        // });
+        const foundUser = await UserModel.findOne({
+            where: { id },
+            attributes: { exclude: ["password"] },
+            include: {
+                model: UserLegalRegisteredModel,
+                where: { userId: id },
+                required: false
+            },
         });
-        return user;
+        return foundUser?.dataValues;
+        // return user;
     },
     getRandomUser: async () => {
         const count = await UserModel.count();
@@ -154,9 +153,13 @@ const userService = {
         return result;
     },
     fetchGRS: async (pin: string) => {
+        
+        const user = await UserModel.findOne({where: {tin: pin}})
+        if(user){
+            throw ErrorService.BadRequest("Пользователь с таким ИНН уже есть в системе");
+        }
         const formData = new FormData();
         formData.append("pin", pin);
-        console.log(formData);
         const { data } = await axios.post(
             "https://swis2.trade.kg/ru/api/v1/user/info",
             formData,
@@ -168,6 +171,12 @@ const userService = {
         );
         return data;
     },
+    activity: async (id: string) => {
+       const user =  await isUserExist(id)
+        user.active = !user.active;
+       await user.save()
+       return user
+    }
 };
 
 export default userService;

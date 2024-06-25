@@ -31,22 +31,22 @@ const PasswordReset: FC = () => {
     }
 
     return (
-        <div className="col-6">
+        <div className="sm:col-12">
             <Toast ref={toast}/>
             <p>Сбросить пароль</p>
-            <div className="col-3 flex flex-column">
+            <div className="sm:col-12 md:col-6 flex flex-column">
                 <label htmlFor="oldPassword">Старый пароль</label>
                 <InputText onChange={handleChange} name="oldPassword" id="oldPassword" className="field" />
             </div>
-            <div className="col-3 flex flex-column">
+            <div className="sm:col-12 md:col-6 flex flex-column">
                 <label htmlFor="password">Новый пароль</label>
                 <InputText onChange={handleChange} name="password" id="password" className="field" />
             </div>
-            <div className="col-3 flex flex-column">
+            <div className="sm:col-12 md:col-6 flex flex-column">
                 <label htmlFor="confirmPassword">Повторите пароль</label>
                 <InputText onChange={handleChange} name="confirmPassword" id="confirmPassword" className="field" />
             </div>
-            <div className="col-3 flex flex-column text-center">
+            <div className="sm:col-12 md:col-6 flex flex-column text-center">
                 <Button onClick={resetPassword} type="button" className="text-center block">
                     Изменить пароль
                 </Button>

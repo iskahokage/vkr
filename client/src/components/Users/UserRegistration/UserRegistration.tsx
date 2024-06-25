@@ -76,19 +76,21 @@ const UserRegistration: FC = () => {
         const formData = new FormData();
         formData.set("pin", userData.tin.trim());
 
-        const { payload } = await dispatch(fetchUserGRS(formData));
-        const response: IGRSResponse = payload.data;
-        setUserData((prev) => ({
-            ...prev,
-            name: response.first_name,
-            surname: response.last_name,
-            email: response.email,
-            address: response.address,
-            legal_registered: {
-                ...prev.legal_registered,
-                ...response.legal_registered,
-            },
-        }));
+        const { payload } = await dispatch(fetchUserGRS({formData, toast}));
+        if(payload){
+            const response: IGRSResponse = payload?.data;
+            setUserData((prev) => ({
+                ...prev,
+                name: response.first_name,
+                surname: response.last_name,
+                email: response.email,
+                address: response.address,
+                legal_registered: {
+                    ...prev.legal_registered,
+                    ...response.legal_registered,
+                },
+            }));
+        }
     };
 
     const handleChange = (
@@ -162,7 +164,7 @@ const UserRegistration: FC = () => {
                                 style={{
                                     marginTop: "2px",
                                 }}
-                                disabled={userData.tin.trim().length < 14}
+                                disabled={userData.tin.trim()?.length < 14}
                                 onClick={onClick}
                             />
                         </div>
