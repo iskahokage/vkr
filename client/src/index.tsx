@@ -1,4 +1,4 @@
-import  store from "./redux/store";
+import store from "./redux/store";
 import { Provider } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -9,7 +9,9 @@ import "primereact/resources/primereact.css"; // core css
 import "primeicons/primeicons.css"; // icons
 import "primeflex/primeflex.css";
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+const root = ReactDOM.createRoot(
+    document.getElementById("root") as HTMLElement
+);
 root.render(
     <React.StrictMode>
         <Provider store={store}>

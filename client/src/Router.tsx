@@ -9,6 +9,7 @@ import LoanList from "./pages/admin/loanList/LoanList";
 import NoPage from "./pages/404/NoPage";
 import ProtectedRouteAdmin from "./components/ProtectedRoute/ProtectedRouteAdmin";
 import ProtectedRouteUser from "./components/ProtectedRoute/ProtectedRouteUser";
+import Home from "./pages/home/Home";
 
 const Router = () => {
     return (
@@ -16,13 +17,14 @@ const Router = () => {
             <Routes>
                 <Route element={<Login />} path="/login" />
                 <Route element={<Layout />} path="/">
-                    <Route path="/admin" element={<ProtectedRouteAdmin/>}>
+                    <Route element={<Home />} path="/"/>
+                    <Route path="/admin" element={<ProtectedRouteAdmin />}>
                         <Route element={<LoanList />} path="/admin/loans" />
                         <Route element={<NewUser />} path="/admin/new-user" />
                         <Route element={<UserList />} path="/admin/users" />
                         <Route element={<NewUser />} path="/admin/user/:id" />
                     </Route>
-                    <Route element={<ProtectedRouteUser/>}>
+                    <Route element={<ProtectedRouteUser />}>
                         <Route element={<Profile />} path="/profile" />
                         <Route element={<LoanList />} path="/user/loans" />
                     </Route>

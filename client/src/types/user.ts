@@ -51,6 +51,7 @@ export interface IUserAddress {
     room?: string;
     postcode?: string;
     mailbox_number?: string;
+    resident_area?: string;
 }
 
 export interface IGRSResponse {

@@ -38,7 +38,7 @@ const Header = () => {
 
     if(user?.accessToken){
         items.push({
-            label: "Мои займы",
+            label: "Моя материальная ответственность",
             // root: true,
             command: () => navigate("/user/loans"),
         })
@@ -47,7 +47,7 @@ const Header = () => {
     if (user?.role === "admin") {
         items.push(
             {
-                label: "Служебные займы",
+                label: "Служебный инвентарь",
                 command: () => navigate("/admin/loans"),
             },
             {

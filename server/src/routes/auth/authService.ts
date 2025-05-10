@@ -54,6 +54,7 @@ const authService = {
             room: legal_registered.room,
             postcode: legal_registered.postcode,
             mailbox_number: legal_registered.mailbox_number,
+            resident_area: legal_registered.resident_area,
         })
         return newUser;
     },
@@ -62,6 +63,10 @@ const authService = {
 
         if (!user) {
             throw ErrorService.BadRequest("Wrong email or password");
+        }
+
+        if(!user.active) {
+            throw ErrorService.ForbiddenError("Вы заблокированы");
         }
 
         const comparedPassword = await compare(password, user.password);
@@ -93,7 +98,7 @@ const authService = {
 
     refreshUser: async (id: string) => {
         const user = await UserModel.findOne({ where: { id } });
-
+        console.log(user)
         if (user) {
             const {
                 name,

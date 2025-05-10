@@ -7,6 +7,7 @@ import { registerValidation } from "../../helpers/validators";
 import roleMiddleware from "../../middlewares/role";
 const authRouter: IRouter = express.Router();
 
+authRouter.get("/refresh", tokenRefreshMiddleware, authController.refreshUser);
 authRouter.post(
     "/register",
     registerValidation,
@@ -14,7 +15,6 @@ authRouter.post(
     authController.register
 );
 authRouter.post("/login", authController.login);
-authRouter.get("/refresh", tokenRefreshMiddleware, authController.refreshUser);
 authRouter.get("/logout", authController.logout);
 authRouter.patch("/password", authMiddleware, authController.changePassword);
 

@@ -29,7 +29,7 @@ const authController = {
             const { email, password } = req.body;
             const userData = await authService.login(email, password);
             res.cookie("refreshToken", userData.refreshToken, {
-                httpOnly: true,
+                httpOnly: false,
                 maxAge: 1000 * 60 * 60 * 72,
             });
             return res.json(userData.user);
@@ -40,10 +40,10 @@ const authController = {
 
     refreshUser: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            if (!req.body) {
+            if (!req.user) {
                 throw ErrorService.UnauthorizedError();
             }
-            const { id } = req.body;
+            const { id } = req.user;  
             const data = await authService.refreshUser(id);
             if (data) {
                 res.cookie("refreshToken", data.refreshToken, {

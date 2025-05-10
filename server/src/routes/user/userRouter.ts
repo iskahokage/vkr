@@ -21,6 +21,14 @@ userRouter.patch(
     fileMiddleware.single("avatar"),
     userController.uploadAvatar
 );
-userRouter.patch("/update/:id", roleMiddleware(['admin']), userController.updateUser);
-userRouter.patch("/activity/:id", roleMiddleware(['admin']), userController.activity)
+userRouter.patch(
+    "/update/:id",
+    roleMiddleware(["admin"]),
+    userController.updateUser
+);
+userRouter.patch(
+    "/activity/:id",
+    roleMiddleware(["admin"]),
+    userController.activity
+);
 export default userRouter;
