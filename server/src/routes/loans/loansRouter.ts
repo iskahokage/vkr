@@ -5,7 +5,7 @@ import roleMiddleware from "../../middlewares/role";
 import { loanValidation } from "../../helpers/validators";
 const loansRouter: IRouter = express.Router();
 
-loansRouter.get("/", roleMiddleware(['admin']), loansController.getLoans);
+loansRouter.get("/", roleMiddleware(["admin"]), loansController.getLoans);
 loansRouter.get("/own", authMiddleware, loansController.getLoanById);
 loansRouter.post(
     "/new",

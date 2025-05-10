@@ -8,6 +8,12 @@ enum UserRole {
     admin = "admin",
     user = "user",
 }
+interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
+    // Some fields are optional when calling UserModel.create() or UserModel.build()
+    id: CreationOptional<number>;
+    name: string;
+}
+
 interface IUserModel extends Model<InferAttributes<IUserModel>, InferCreationAttributes<IUserModel>> {
     id: CreationOptional<number>;
     email: string;
@@ -133,6 +139,7 @@ interface IUserAddressModel extends Model<InferAttributes<IUserAddressModel>, In
     room?: string;
     postcode?: string;
     mailbox_number?: string;
+    resident_area?: string;
 }
 
 export interface IUserAddress {
@@ -148,6 +155,7 @@ export interface IUserAddress {
     room?: string;
     postcode?: string;
     mailbox_number?: string;
+    resident_area?: string;
 }
 export const UserLegalRegisteredModel = sequelize.define<IUserAddressModel>("legal_registered", {
   id: {
@@ -203,6 +211,10 @@ userId: {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    resident_area: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
 });
 UserModel.hasOne(UserLegalRegisteredModel, { foreignKey: 'userId', as: 'legal_registered' });
 UserLegalRegisteredModel.belongsTo(UserModel, { foreignKey: 'userId' });

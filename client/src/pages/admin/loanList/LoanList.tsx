@@ -127,7 +127,7 @@ const LoanList: FC = () => {
         <div className="w-10 mx-auto">
             <LoanEditor loan={selectedLoan} />
             <Toast ref={toast} />
-            <Card title="Список служебных займов">
+            <Card title="Список инвентаря">
                 <DataTable
                     filters={filters}
                     value={loans}
@@ -152,7 +152,7 @@ const LoanList: FC = () => {
                     ></Column>
                     <Column
                         field="loanDate"
-                        header={"Дата служебного займа"}
+                        header={"Дата служебной ответственности"}
                         body={DateCell}
                         align={"center"}
                     />

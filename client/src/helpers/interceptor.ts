@@ -15,7 +15,8 @@ export const getToken = () => {
 };
 
 const refreshAuthToken = async () => {
-    const response = await axios.get(baseUrl + "/user/refresh",  {withCredentials: true});
+    const response = await api.get(baseUrl + "/auth/refresh",  {withCredentials: true});
+    console.log(response)
     return response.data
 };
 
@@ -49,6 +50,7 @@ api.interceptors.response.use(
                     originalRequest.headers[
                         "Authorization"
                     ] = `Bearer ${newAuthToken}`;
+                    console.log(newAuthToken)
                     return api(originalRequest);
                 } catch (refreshError) {
                     // Handle refresh token failure (e.g., redirect to login page)

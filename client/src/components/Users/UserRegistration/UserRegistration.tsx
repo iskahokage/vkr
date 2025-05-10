@@ -53,6 +53,7 @@ const UserRegistration: FC = () => {
             room: "",
             postcode: "",
             mailbox_number: "",
+            resident_area: ""
         },
     });
     const dispatch: AppDispatch = useAppDispatch();

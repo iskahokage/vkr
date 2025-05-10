@@ -1,30 +1,30 @@
 import { tr } from "@faker-js/faker";
 import { LoanModel } from "../../db/models/loanModel";
 import { UserModel } from "../../db/models/userModel";
+import { getOrSetCache, setCache } from "../../db/redis";
 
 export const loansService = {
     getLoans: async () => {
-        // const countries = await getOrSetCache(`loans`, async () => {
-        // })
-        // return countries
+        // const loans = await getOrSetCache(`loans`, async () => {
+            
+        // });
+        // return loans;
         const result = await LoanModel.findAll({
             include: { model: UserModel, attributes: ["name", "surname"] },
         });
         return result;
     },
     getLoanById: async (userId: string) => {
-        const result = await LoanModel.findAll({
-            where: { userId },
-            include: { model: UserModel },
+        const loan = await getOrSetCache(`loan:${userId}`, async () => {
+            const result = await LoanModel.findAll({
+                where: { userId },
+                include: { model: UserModel },
+            });
+            return result;
         });
-        return result;
+        return loan;
     },
-    createLoan: async (
-        tool: string,
-        loanDate: Date,
-        userId: number,
-        serialNumber: string
-    ) => {
+    createLoan: async (tool: string, loanDate: Date, userId: number, serialNumber: string) => {
         const loan = await LoanModel.create({
             tool,
             loanDate,
@@ -49,11 +49,11 @@ export const loansService = {
             where: { id },
             include: { model: UserModel, attributes: ["name", "surname"] },
         });
-        await loan?.update(
-            { tool, loanDate, userId, serialNumber, returnDate },
-            { where: { id } }
-        );
+        await loan?.update({ tool, loanDate, userId, serialNumber, returnDate }, { where: { id } });
         await loan?.save();
+        await setCache(`loan:${id}`, async () => {
+            return await loan?.dataValues;
+        });
         return loan;
     },
 };

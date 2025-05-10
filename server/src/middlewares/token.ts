@@ -6,7 +6,7 @@ import TokenService from "../helpers/tokenService";
 const tokenRefreshMiddleware = (req: Request, res: Response, next: NextFunction) => {
     try {
         const {refreshToken} = req.cookies; 
-
+        console.log(req.cookies)
         if(!refreshToken) {
             throw ErrorService.UnauthorizedError()
         }

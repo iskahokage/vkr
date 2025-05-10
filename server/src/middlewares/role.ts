@@ -13,20 +13,19 @@ const roleMiddleware = (rolesArray: string[]) => {
             if (!token) {
                 return next(ErrorService.UnauthorizedError());
             }
-            const userData = TokenService.validateAccessToken(
+            const userData = <CustomJwtPayload>TokenService.validateAccessToken(
                 token
-            ) as CustomJwtPayload;
+            )
             if (!userData) {
                 next(ErrorService.UnauthorizedError());
             }
             const { role } = userData;
-            
+
             if (rolesArray.includes(role)) {
                 req.user = userData;
                 next();
-            }
-            else{
-                next(ErrorService.ForbiddenError('Access denied'));
+            } else {
+                next(ErrorService.ForbiddenError("Access denied"));
             }
         } catch (error) {
             next(ErrorService.UnauthorizedError());

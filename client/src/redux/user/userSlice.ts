@@ -79,7 +79,11 @@ export const updateUser = createAsyncThunk<any, newUserArgs>(
     'updateUser/patch',
     async({userData, toast}) =>{
         try {
-            const { data }= await api.patch(baseUrl + "/user/update/" + userData.id, userData);
+            const { data, status }= await api.patch(baseUrl + "/user/update/" + userData.id, userData);
+            if(status === 200){
+
+            toast.current?.show({ severity: "success", summary: "Данные сотрудника обновлены", life: 3000 });
+            }
             return data
         } catch (error) {
             const err = error as AxiosError;
